@@ -6,13 +6,15 @@ authors = [
 ]
 description = "Validates Sender Policy Framework (SPF) records."
 readme = "README.md"
+license = {file = "LICENSE"}
 requires-python = ">=3.7"
 dependencies = [
     "dnspython==2.4.2"
 ]
+keywords = ["spf", "sender policy framework", "email"]
 
 [project.urls]
-"Source" = "https://github.com/fpcorso/spf-validator"
+"Repository" = "https://github.com/fpcorso/spf-validator"
 
 [build-system]
 requires = ['setuptools>=42']
