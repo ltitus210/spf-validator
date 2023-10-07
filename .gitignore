@@ -1,6 +1,14 @@
+# Build
+dist
+src/*.egg-info
+
 # Environments
 .venv
 venv
 
 # IDE
 .idea
+.vscode
+
+#Python
+__pycache__
