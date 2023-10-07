@@ -1,5 +1,6 @@
 import re
 import dns.resolver
+from urllib.parse import urlparse
 
 
 def validate_domain_spf(domain: str) -> list[str]:
@@ -84,8 +85,14 @@ def get_domain_spf_record(domain: str) -> str:
     Returns:
         The SPF record for the domain.
     """
+    # If domain is a URL, remove protocol, subdomains, paths, and ports from it.
+    if '://' in domain:
+        domain = urlparse(domain).hostname
 
-    txt_records = dns.resolver.resolve(domain, "TXT")
+    try:
+        txt_records = dns.resolver.resolve(domain, "TXT")
+    except dns.resolver.NoAnswer:
+        return ""
 
     # Loop through the records and find the SPF record.
     for record in txt_records:
