@@ -85,9 +85,13 @@ def get_domain_spf_record(domain: str) -> str:
     Returns:
         The SPF record for the domain.
     """
-    # If domain is a URL, remove protocol, subdomains, paths, and ports from it.
+    # If domain is a URL, remove protocol, paths, and ports from it.
     if '://' in domain:
         domain = urlparse(domain).hostname
+
+    # Remove www subdomain (if present)
+    if domain.startswith("www."):
+        domain = domain[4:]
 
     try:
         txt_records = dns.resolver.resolve(domain, "TXT")
