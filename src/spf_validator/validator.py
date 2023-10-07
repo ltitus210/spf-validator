@@ -49,11 +49,15 @@ def validate_spf_string(spf: str) -> list[str]:
 
     # First, make sure we are not missing the version instance.
     if len(version_instances) == 0:
-        issues.append("The SPF record is missing the SPF version. This should be at the beginning of the record and look like v=spf1")
+        issues.append(
+            "The SPF record is missing the SPF version. This should be at the beginning of the record and look like v=spf1"
+        )
 
     # Next, make sure we only have 1 version instance.
     if len(version_instances) > 1:
-        issues.append("There are more than one instance of the SPF version in this SPF record.")
+        issues.append(
+            "There are more than one instance of the SPF version in this SPF record."
+        )
 
     # Next, make sure the version instance is at the beginning of the string.
     if version_regex.search(spf).span()[0] != 0:
@@ -64,7 +68,9 @@ def validate_spf_string(spf: str) -> list[str]:
 
     # Next, make sure we have at least 1 catchall instance.
     if len(catchall_instances) == 0:
-        issues.append("There is not a catchall in this SPF record. There should be an 'all' at the end of the record.")
+        issues.append(
+            "There is not a catchall in this SPF record. There should be an 'all' at the end of the record."
+        )
 
     # Next, make sure we only have 1 catchall instance.
     if len(catchall_instances) > 1:
@@ -78,7 +84,9 @@ def validate_spf_string(spf: str) -> list[str]:
 
     # Next, make sure the catchall is not prefixed with a + qualifier.
     if catchall_instance.group()[0] == "+" or catchall_instance.group()[0] == "a":
-        issues.append("The catchall is prefixed with + qualifier. This means that the SPF record will always pass. This is not recommended.")
+        issues.append(
+            "The catchall is prefixed with + qualifier. This means that the SPF record will always pass. This is not recommended."
+        )
 
     return issues
 
@@ -93,7 +101,7 @@ def get_domain_spf_record(domain: str) -> str:
         The SPF record for the domain.
     """
     # If domain is a URL, remove protocol, paths, and ports from it.
-    if '://' in domain:
+    if "://" in domain:
         domain = urlparse(domain).hostname
 
     # Remove www subdomain (if present)
@@ -108,7 +116,7 @@ def get_domain_spf_record(domain: str) -> str:
     # Loop through the records and find the SPF record.
     for record in txt_records:
         record_text = record.strings[0].decode("utf-8")
-        if 'v=spf' in record_text or 'all' in record_text:
+        if "v=spf" in record_text or "all" in record_text:
             return record_text
 
     # If we get here, we didn't find an SPF record.
