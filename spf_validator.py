@@ -17,7 +17,7 @@ def validate_spf_string(spf: str) -> list[str]:
 
     issues = []
 
-    version_regex = re.compile(r"(\bv=\S+\b)")
+    version_regex = re.compile(r"\bv=\S+\b")
     version_instances = version_regex.findall(spf)
 
     # First, make sure we are not missing the version instance.
@@ -29,10 +29,10 @@ def validate_spf_string(spf: str) -> list[str]:
         issues.append("Multiple version instances.")
 
     # Next, make sure the version instance is at the beginning of the string.
-    if version_regex.match(spf).span()[0] != 0:
+    if version_regex.search(spf).span()[0] != 0:
         issues.append("Version instance not at beginning of string.")
 
-    catchall_regex = re.compile(r"(\S?all\b)")
+    catchall_regex = re.compile(r"\S?all\b")
     catchall_instances = catchall_regex.findall(spf)
 
     # Next, make sure we have at least 1 catchall instance.
