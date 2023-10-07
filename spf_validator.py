@@ -1,4 +1,29 @@
 import re
+import dns.resolver
+
+
+def validate_domain_spf(domain: str) -> list[str]:
+    """Validate the SPF record for a domain.
+
+    Args:
+        domain: The domain to validate the SPF record for.
+
+    Returns:
+        A list of issues with the SPF record. If the list is empty, the SPF record is valid.
+    """
+
+    issues = []
+
+    spf = get_domain_spf_record(domain)
+
+    # If we didn't find an SPF record, go ahead and bail now.
+    if not spf:
+        issues.append("No SPF record found.")
+        return issues
+
+    issues.extend(validate_spf_string(spf))
+
+    return issues
 
 
 def validate_spf_string(spf: str) -> list[str]:
@@ -8,7 +33,7 @@ def validate_spf_string(spf: str) -> list[str]:
         spf: The SPF string to validate.
 
     Returns:
-        True if the SPF string is valid, False otherwise.
+        A list of issues with the SPF string. If the list is empty, the SPF string is valid.
     """
 
     # If the string is empty, go ahead and bail now.
@@ -48,3 +73,25 @@ def validate_spf_string(spf: str) -> list[str]:
         issues.append("Catchall instance not at end of string.")
 
     return issues
+
+
+def get_domain_spf_record(domain: str) -> str:
+    """Get the SPF record for a domain.
+
+    Args:
+        domain: The domain to get the SPF record for.
+
+    Returns:
+        The SPF record for the domain.
+    """
+
+    txt_records = dns.resolver.resolve(domain, "TXT")
+
+    # Loop through the records and find the SPF record.
+    for record in txt_records:
+        record_text = record.strings[0].decode("utf-8")
+        if 'v=spf' in record_text or 'all' in record_text:
+            return record_text
+
+    # If we get here, we didn't find an SPF record.
+    return ""
