@@ -55,4 +55,4 @@ When contributing please ensure you follow the guidelines below so that we can k
 
 ## License
 
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for more details.
+This project is licensed under the MIT License. See [LICENSE](https://github.com/fpcorso/spf-validator/blob/main/LICENSE) for more details.
