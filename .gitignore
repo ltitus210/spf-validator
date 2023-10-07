@@ -10,5 +10,6 @@ venv
 .idea
 .vscode
 
-#Python
+# Python
 __pycache__
+.pytest_cache
