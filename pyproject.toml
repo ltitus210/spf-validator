@@ -1,6 +1,6 @@
 [project]
 name = "spf_validator"
-version = "0.0.2"
+version = "1.0.0"
 authors = [
   { name="Frank Corso", email="frank@frankcorso.me" },
 ]
