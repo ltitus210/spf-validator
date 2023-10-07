@@ -69,9 +69,15 @@ def validate_spf_string(spf: str) -> list[str]:
     if len(catchall_instances) > 1:
         issues.append("Multiple catchall instances.")
 
+    catchall_instance = catchall_regex.search(spf)
+
     # Next, make sure the catchall instance is at the end of the string.
-    if catchall_regex.search(spf).span()[1] != len(spf):
+    if catchall_instance.span()[1] != len(spf):
         issues.append("Catchall instance not at end of string.")
+
+    # Next, make sure the catchall is not prefixed with a + qualifier.
+    if catchall_instance.group()[0] == "+" or catchall_instance.group()[0] == "a":
+        issues.append("Catchall instance prefixed with + qualifier.")
 
     return issues
 
