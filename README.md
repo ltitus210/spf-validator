@@ -14,6 +14,8 @@ pip install spf-validator
 
 ## Usage
 
+There are two main functions in the package: `validate_spf_string` and `validate_domain_spf`. Both of these will return a list of strings where each string, if any, is an issue with the SPF record.
+
 To validate an SPF string, use `validate_spf_string` by passing it the string.
 
 To use:
@@ -21,7 +23,7 @@ To use:
 ```python
 from spf_validator import validator
 
-validator.validate_spf_string('v=spf1 a mx include:_spf.google.com ~all')
+issues_list = validator.validate_spf_string('v=spf1 a mx include:_spf.google.com ~all')
 ```
 
 To validate an SPF record on a given domain, use `validate_domain_spf` by passing it the domain. This will retrieve the TXT records for the domain, locate the SPF record, and validate it.
@@ -31,7 +33,7 @@ To use:
 ```python
 from spf_validator import validator
 
-validator.validate_domain_spf('google.com')
+issues_list = validator.validate_domain_spf('google.com')
 ```
 
 ## Contributing
