@@ -28,7 +28,9 @@ def test_missing_catchall():
 
 def test_multiple_catchalls():
     """Test an SPF string with multiple catchalls."""
-    assert len(validator.validate_spf_string("v=spf1 +all include:example.com -all")) > 0
+    assert (
+        len(validator.validate_spf_string("v=spf1 +all include:example.com -all")) > 0
+    )
 
 
 def test_catchall_not_at_end():
