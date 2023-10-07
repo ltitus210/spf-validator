@@ -44,49 +44,50 @@ def validate_spf_string(spf: str) -> list[str]:
 
     issues = []
 
+    ###
+    # SPF version checks
+    ###
+
     version_regex = re.compile(r"\bv=\S+\b")
     version_instances = version_regex.findall(spf)
 
-    # First, make sure we are not missing the version instance.
     if len(version_instances) == 0:
         issues.append(
             "The SPF record is missing the SPF version. This should be at the beginning of the record and look like v=spf1"
         )
+    else:
+        if len(version_instances) > 1:
+            issues.append(
+                "There are more than one instance of the SPF version in this SPF record."
+            )
 
-    # Next, make sure we only have 1 version instance.
-    if len(version_instances) > 1:
-        issues.append(
-            "There are more than one instance of the SPF version in this SPF record."
-        )
+        if len(version_instances) > 0 and version_regex.search(spf).span()[0] != 0:
+            issues.append("The SPF version is not at the beginning of the SPF record.")
 
-    # Next, make sure the version instance is at the beginning of the string.
-    if version_regex.search(spf).span()[0] != 0:
-        issues.append("The SPF version is not at the beginning of the SPF record.")
+    ###
+    # Catchall checks
+    ###
 
     catchall_regex = re.compile(r"\S?all\b")
     catchall_instances = catchall_regex.findall(spf)
 
-    # Next, make sure we have at least 1 catchall instance.
     if len(catchall_instances) == 0:
         issues.append(
             "There is not a catchall in this SPF record. There should be an 'all' at the end of the record."
         )
+    else:
+        if len(catchall_instances) > 1:
+            issues.append("There is more than one catchall in this SPF record.")
 
-    # Next, make sure we only have 1 catchall instance.
-    if len(catchall_instances) > 1:
-        issues.append("There is more than one catchall in this SPF record.")
+        catchall_instance = catchall_regex.search(spf)
 
-    catchall_instance = catchall_regex.search(spf)
+        if catchall_instance.span()[1] != len(spf):
+            issues.append("The catchall is not at the end of the SPF record.")
 
-    # Next, make sure the catchall instance is at the end of the string.
-    if catchall_instance.span()[1] != len(spf):
-        issues.append("The catchall is not at the end of the SPF record.")
-
-    # Next, make sure the catchall is not prefixed with a + qualifier.
-    if catchall_instance.group()[0] == "+" or catchall_instance.group()[0] == "a":
-        issues.append(
-            "The catchall is prefixed with + qualifier. This means that the SPF record will always pass. This is not recommended."
-        )
+        if catchall_instance.group()[0] == "+" or catchall_instance.group()[0] == "a":
+            issues.append(
+                "The catchall is prefixed with + qualifier. This means that the SPF record will always pass. This is not recommended."
+            )
 
     return issues
 
