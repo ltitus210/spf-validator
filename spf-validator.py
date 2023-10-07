@@ -1,5 +1,6 @@
 import re
 
+
 def validate_spf_string(spf: str) -> bool:
     """Validate an SPF string.
 
@@ -14,11 +15,18 @@ def validate_spf_string(spf: str) -> bool:
     if not spf:
         return False
 
-    # Create regex
-    regex = r"^v=spf1\s"
+    version_regex = re.compile(r"(?P<version>\bv=\S+\b)")
+    version_instances = version_regex.findall(spf)
 
-    # Check for valid version
-    if not re.search(regex, spf):
+    # First, make sure we are not missing the version instance.
+    if len(version_instances) == 0:
         return False
 
+    # Next, make sure we only have 1 version instance.
+    if len(version_instances) > 1:
+        return False
+
+    # Next, make sure the version instance is at the beginning of the string.
+    if version_regex.match(spf).span()[0] != 0:
+        return False
 
