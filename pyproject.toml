@@ -4,7 +4,7 @@ version = "0.0.1"
 authors = [
   { name="Frank Corso", email="frank@frankcorso.me" },
 ]
-description = "Validates Sender Policy Framework (SPF) records."
+description = "Validates Sender Policy Framework (SPF) strings to ensure they are formatted correctly."
 readme = "README.md"
 license = {file = "LICENSE"}
 requires-python = ">=3.7"
