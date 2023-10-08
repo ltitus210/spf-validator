@@ -1,3 +1,4 @@
+import ipaddress
 import re
 from urllib.parse import urlparse
 
@@ -89,6 +90,27 @@ def validate_spf_string(spf: str) -> list[str]:
                 "The catchall is prefixed with + qualifier. This means that the SPF record will always pass. This is not recommended."
             )
 
+    ###
+    # IP4 and IP6 checks
+    ###
+
+    ip4_regex = re.compile(r"\bip4:\S+\b")
+    ip6_regex = re.compile(r"\bip6:\S+\b")
+    ip_instances = ip4_regex.findall(spf) + ip6_regex.findall(spf)
+    for ip4_instance in ip_instances:
+        # Strip of the ip4: or ip6: prefix
+        ip = ip4_instance[4:]
+        if '/' not in ip:
+            try:
+                ipaddress.ip_address(ip)
+            except ValueError:
+                issues.append(f"The IP {ip} is not valid.")
+        else:
+            try:
+                ipaddress.ip_network(ip)
+            except ValueError:
+                issues.append(f"The IP {ip} is not valid.")
+
     return issues
 
 
@@ -116,8 +138,9 @@ def get_domain_spf_record(domain: str) -> str:
 
     # Loop through the records and find the SPF record.
     for record in txt_records:
-        record_text = record.strings[0].decode("utf-8")
-        if "v=spf" in record_text or "all" in record_text:
+        # Convert the record to a string.
+        record_text = ''.join([a.decode('utf-8') for a in record.strings])
+        if "v=spf" in record_text:
             return record_text
 
     # If we get here, we didn't find an SPF record.
