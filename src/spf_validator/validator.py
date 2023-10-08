@@ -100,7 +100,7 @@ def validate_spf_string(spf: str) -> list[str]:
     for ip4_instance in ip_instances:
         # Strip of the ip4: or ip6: prefix
         ip = ip4_instance[4:]
-        if '/' not in ip:
+        if "/" not in ip:
             try:
                 ipaddress.ip_address(ip)
             except ValueError:
@@ -139,7 +139,7 @@ def get_domain_spf_record(domain: str) -> str:
     # Loop through the records and find the SPF record.
     for record in txt_records:
         # Convert the record to a string.
-        record_text = ''.join([a.decode('utf-8') for a in record.strings])
+        record_text = "".join([a.decode("utf-8") for a in record.strings])
         if "v=spf" in record_text:
             return record_text
 
