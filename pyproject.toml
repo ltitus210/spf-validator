@@ -7,7 +7,7 @@ authors = [
 description = "Validates Sender Policy Framework (SPF) strings to ensure they are formatted correctly."
 readme = "README.md"
 license = {file = "LICENSE"}
-requires-python = ">=3.7"
+requires-python = ">=3.9"
 dependencies = [
     "dnspython==2.4.2"
 ]
