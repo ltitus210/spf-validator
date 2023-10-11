@@ -98,7 +98,7 @@ def validate_spf_string(spf: str) -> list[str]:
     ip6_regex = re.compile(r"\bip6:\S+\b")
     ip_instances = ip4_regex.findall(spf) + ip6_regex.findall(spf)
     for ip4_instance in ip_instances:
-        # Strip of the ip4: or ip6: prefix
+        # Strip off the ip4: or ip6: prefix
         ip = ip4_instance[4:]
         if "/" not in ip:
             try:
