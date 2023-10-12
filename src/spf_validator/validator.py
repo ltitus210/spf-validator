@@ -41,9 +41,17 @@ def validate_spf_string(spf: str) -> list[str]:
 
     # If the string is empty, go ahead and bail now.
     if not spf:
-        return ["Empty SPF string."]
+        return ["The SPF record is empty."]
 
     issues = []
+
+    ###
+    # General checks
+    ###
+    if len(spf) > 255:
+        issues.append(
+            "The SPF record is longer than 255 characters which is not allowed."
+        )
 
     ###
     # SPF version checks
@@ -87,7 +95,7 @@ def validate_spf_string(spf: str) -> list[str]:
 
         if catchall_instance.group()[0] == "+" or catchall_instance.group()[0] == "a":
             issues.append(
-                "The catchall is prefixed with + qualifier. This means that the SPF record will always pass. This is not recommended."
+                "The catchall is prefixed with + qualifier. This means that the SPF record will always pass which allows anyone to send emails claiming to be from you. This is not recommended."
             )
 
     ###
@@ -110,6 +118,17 @@ def validate_spf_string(spf: str) -> list[str]:
                 ipaddress.ip_network(ip)
             except ValueError:
                 issues.append(f"The IP {ip} is not valid.")
+
+    ###
+    # Deprecated mechanism checks
+    ###
+
+    ptr_regex = re.compile(r"\bptr:?(\S+)?\b")
+    ptr_instances = ptr_regex.findall(spf)
+    if len(ptr_instances) > 0:
+        issues.append(
+            "The SPF record contains the 'ptr' mechanism which is not longer in the SPF specification and can result in a larger number of expensive DNS lookups."
+        )
 
     return issues
 
