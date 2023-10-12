@@ -12,7 +12,10 @@ def test_long_spf_string():
         len(
             validator.validate_spf_string(
                 "v=spf1 mx a include:example.com include:example-two.com include:example-three.com include:example-four.com include:example-five.com include:example-six.com include:example-seven.com include:example-eight.com include:example-nine.com include:example-ten.com ip4:127.0.0.1 -all"
-            )) > 0 )
+            )
+        )
+        > 0
+    )
 
 
 def test_missing_version():
