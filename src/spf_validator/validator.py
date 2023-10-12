@@ -41,7 +41,7 @@ def validate_spf_string(spf: str) -> list[str]:
 
     # If the string is empty, go ahead and bail now.
     if not spf:
-        return ["Empty SPF string."]
+        return ["The SPF record is empty."]
 
     issues = []
 
@@ -93,7 +93,7 @@ def validate_spf_string(spf: str) -> list[str]:
 
         if catchall_instance.group()[0] == "+" or catchall_instance.group()[0] == "a":
             issues.append(
-                "The catchall is prefixed with + qualifier. This means that the SPF record will always pass. This is not recommended."
+                "The catchall is prefixed with + qualifier. This means that the SPF record will always pass which allows anyone to send emails claiming to be from you. This is not recommended."
             )
 
     ###
