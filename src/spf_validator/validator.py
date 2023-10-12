@@ -117,6 +117,17 @@ def validate_spf_string(spf: str) -> list[str]:
             except ValueError:
                 issues.append(f"The IP {ip} is not valid.")
 
+    ###
+    # Deprecated mechanism checks
+    ###
+
+    ptr_regex = re.compile(r"\bptr:?(\S+)?\b")
+    ptr_instances = ptr_regex.findall(spf)
+    if len(ptr_instances) > 0:
+        issues.append(
+            "The SPF record contains the 'ptr' mechanism which is not longer in the SPF specification and can result in a larger number of expensive DNS lookups."
+        )
+
     return issues
 
 
