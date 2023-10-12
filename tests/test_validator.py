@@ -6,6 +6,15 @@ def test_empty_spf_string():
     assert len(validator.validate_spf_string("")) > 0
 
 
+def test_long_spf_string():
+    """Test a long SPF string."""
+    assert (
+        len(
+            validator.validate_spf_string(
+                "v=spf1 mx a include:example.com include:example-two.com include:example-three.com include:example-four.com include:example-five.com include:example-six.com include:example-seven.com include:example-eight.com include:example-nine.com include:example-ten.com ip4:127.0.0.1 -all"
+            )) > 0 )
+
+
 def test_missing_version():
     """Test an SPF string missing the version."""
     assert len(validator.validate_spf_string("include:example.com -all")) > 0
@@ -57,6 +66,11 @@ def test_invalid_ip6():
         len(validator.validate_spf_string("v=spf1 ip6:1080::8:800:68.0.3.1/296 -all"))
         > 0
     )
+
+
+def test_ptr_mechanism():
+    """Test an SPF string with a ptr mechanism."""
+    assert len(validator.validate_spf_string("v=spf1 ptr -all")) > 0
 
 
 def test_valid_spf_string():
