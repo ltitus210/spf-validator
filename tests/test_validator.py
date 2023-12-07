@@ -33,6 +33,11 @@ def test_version_not_at_beginning():
     assert len(validator.validate_spf_string("include:example.com v=spf1 -all")) > 0
 
 
+def test_version_missing_space():
+    """Test an SPF string where there is no space between the version and next mechanism."""
+    assert len(validator.validate_spf_string("v=spf1include:example.com -all")) > 0
+
+
 def test_missing_catchall():
     """Test an SPF string missing the catchall."""
     assert len(validator.validate_spf_string("v=spf1 include:example.com")) > 0
