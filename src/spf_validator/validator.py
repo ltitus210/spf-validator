@@ -57,7 +57,7 @@ def validate_spf_string(spf: str) -> list[str]:
     # SPF version checks
     ###
 
-    version_regex = re.compile(r"\bv=\S+\b")
+    version_regex = re.compile(r"\bv=\w+\s")
     version_instances = version_regex.findall(spf)
 
     if len(version_instances) == 0:
