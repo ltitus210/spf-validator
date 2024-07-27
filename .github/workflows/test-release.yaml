@@ -4,7 +4,7 @@ on:
     branches:
       - 'release/**'
 jobs:
-  tests:
+  test-deploy:
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v3
@@ -15,3 +15,5 @@ jobs:
         run: python -m pip install --upgrade build
       - name: Build version
         run: python -m build
+      - name: Deploy to TestPypi
+        run: python -m twine upload --repository testpypi dist/*
