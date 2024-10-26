@@ -176,7 +176,7 @@ def get_domain_spf_record(domain: str) -> str:
 
     try:
         txt_records = dns.resolver.resolve(domain, "TXT")
-    except dns.resolver.NoAnswer:
+    except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN):
         return ""
 
     # Loop through the records and find the SPF record.
