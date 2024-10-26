@@ -88,4 +88,4 @@ def test_valid_spf_string():
 
 def test_too_many_includes():
     includes = [f'include:{letter}.example.com' for letter in 'abcdefghijklmn']
-    assert len(validator.validate_spf_string(f"v=spf1 {' '.join(includes)} -all")) > 1
+    assert len(validator.validate_spf_string(f"v=spf1 {' '.join(includes)} -all")) == 2
