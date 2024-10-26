@@ -84,3 +84,7 @@ def test_ptr_mechanism():
 def test_valid_spf_string():
     """Test a valid SPF string."""
     assert len(validator.validate_spf_string("v=spf1 include:example.com -all")) == 0
+
+
+def test_unknown_parts():
+    assert len(validator.validate_spf_string("v=spf1 random include:example.com -all")) == 1
