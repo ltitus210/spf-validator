@@ -48,9 +48,9 @@ def validate_spf_string(spf: str) -> list[str]:
     ###
     # General checks
     ###
-    if len(spf) > 255:
+    if len(spf) > 2048:
         issues.append(
-            "The SPF record is longer than 255 characters which is not allowed."
+            "The SPF record is longer than 2048 characters which exceeds our record maximum length. (Cloudflare)"
         )
 
     ###
