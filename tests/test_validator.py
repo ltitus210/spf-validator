@@ -93,3 +93,7 @@ def test_too_many_includes():
 
 def test_unknown_parts():
     assert len(validator.validate_spf_string("v=spf1 random include:example.com -all")) == 1
+
+
+def test_catchall_false_positive():
+    assert len(validator.validate_spf_string("v=spf1 include:all.example.com -all")) == 0
