@@ -89,3 +89,7 @@ def test_valid_spf_string():
 def test_too_many_includes():
     includes = [f'include:{letter}.example.com' for letter in 'abcdefghijklmn']
     assert len(validator.validate_spf_string(f"v=spf1 {' '.join(includes)} -all")) == 2
+
+
+def test_unknown_parts():
+    assert len(validator.validate_spf_string("v=spf1 random include:example.com -all")) == 1
